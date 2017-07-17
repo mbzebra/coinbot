@@ -1,0 +1,31 @@
+{
+  "name": "alexa-coin-bot",
+  "version": "1.0.0",
+  "description": "Alexa Coin Data Bot",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.16.0",
+    "alexa-app": "^4.0.0",
+    "alexa-app-server": "^3.0.1",
+    "alexa-sdk": "^1.0.6",
+    "aws-sdk": "^2.4.7",
+    "object.entries": "^1.0.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mbzebra/coinbot.git"
+  },
+  "keywords": [
+    "Alexa",
+    "bot",
+    "coin",
+    "bitcoin",
+    "ethereum"
+  ],
+  "author": "Mariswaran",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mbzebra/coinbot/issues"
+  },
+  "homepage": "https://github.com/mbzebra/coinbot#readme"
+}
