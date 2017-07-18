@@ -1,0 +1,2 @@
+# coinbot
+Crypto Currency Bot
