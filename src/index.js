@@ -3,7 +3,6 @@
 const axios = require('axios');
 const entries = require('object.entries');
 var attributeHelper = require('./lib/DynamoAttributesHelper');
-var config = require('./configuration/config');
 
 
 // Close dialog with the customer, reporting fulfillmentState of Failed or Fulfilled ("Thanks, your pizza will arrive in 20 minutes")
@@ -33,14 +32,14 @@ function getTopCoinPrice(callback,sessionAttributes) {
     var URI = 'https://api.kraken.com/0/public/Ticker?pair=';
 
     let promiseArray = topCoins.map(url => axios.get(URI + url));
-
+    let ctr = 0;
     axios.all(promiseArray)
         .then(function(results) {
             let temp = results.map(response => entries(entries(entries(response.data.result)[0][1])[2][1])[0][1]);
-            console.log(temp);
+            console.log(topCoins[ctr++], "=",  temp);
             callback(close(sessionAttributes, 'Fulfilled', {
                 'contentType': 'PlainText',
-                'content': `Price of Top Coins is ${temp}`
+                'content': `Price of Bitcoin, Ethereum, Litecoin, Ripple and Ethereum Classic are ${temp}`
             }));
 
         })
@@ -59,7 +58,66 @@ function getTopCoinPrice(callback,sessionAttributes) {
 
 function getCoinPrice(coinName, callback,sessionAttributes) {
 
-    var URI = 'https://api.kraken.com/0/public/Ticker?pair=' + coinName;
+    var coinValue = "";
+    switch (coinName.toLowerCase()) {
+        case "bitcoin":
+            coinValue = "XBTUSD"
+            break;
+        case "ripple":
+            coinValue = "XRPUSD"
+            break;
+        case "ethereum":
+            coinValue = "ETHUSD"
+            break;
+        case "classic":
+            coinValue = "ETCUSD"
+            break;
+        case "ethereum classic":
+            coinValue = "ETCUSD"
+            break;
+        case "ec":
+            coinValue = "ETCUSD"
+            break;
+        case "xbt":
+            coinValue = "XBTUSD"
+            break;
+        case "bit":
+            coinValue = "XBTUSD"
+            break;
+        case "eth":
+            coinValue = "ETHUSD"
+            break;
+        case "rip":
+            coinValue = "XRPUSD"
+            break;
+        case "icon":
+            coinValue = "ICNUSD"
+            break;
+        case "iconomi":
+            coinValue = "ICNUSD"
+            break;
+        case "dash":
+            coinValue = "DASHUSD"
+            break;            
+        case "eos":
+            coinValue = "EOSUSD"
+            break;  
+         case "usdt":
+            coinValue = "USDTUSD"
+            break;  
+        case "lite":
+            coinValue = "LTCUSD"
+            break;  
+        case "litecoin":
+            coinValue = "LTCUSD"
+            break;  
+        default:
+            coinValue = coinName
+            break;
+    }
+
+    if(coinValue.length<1) return;
+    var URI = 'https://api.kraken.com/0/public/Ticker?pair=' + coinValue;
 
     axios.get(URI)
         .then(response => {
@@ -87,6 +145,7 @@ function dispatch(intentRequest, callback) {
     const sessionAttributes = intentRequest.sessionAttributes;
     const slots = intentRequest.currentIntent.slots;
     const coinName = slots.coinName;
+    console.log('coin name being processed is', coinName);
 
     if (slots.coinName.toLowerCase() == "topcoins" || slots.coinName.toLowerCase() == "top")
         getTopCoinPrice(callback,sessionAttributes);
